@@ -1,0 +1,11 @@
+/vendor
+/docker/.mysql
+/.phpunit.cache
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+/.phpunit.cache
+.phpunit.result.cache
+*.log

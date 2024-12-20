@@ -1,0 +1,22 @@
+{
+    "name": "romulo-xavier25/phpunit-tdd",
+    "description": "PHP with TDD",
+    "authors": [
+        {
+            "name": "Romulo Xavier",
+            "email": "romulo.xavier25@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Core\\": "src/Core/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11",
+        "mockery/mockery": "^1.6"
+    },
+    "scripts": {
+        "phpunit": "vendor/bin/phpunit"
+    }
+}
