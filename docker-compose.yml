@@ -1,0 +1,54 @@
+volumes:
+    mysql-data-phpunit-tdd:
+        driver: local
+
+networks:
+    microservices:
+        driver: bridge
+
+services:
+    laravel:
+        build:
+            args:
+                user: romulo
+                uid: 1000
+            context: ./
+            dockerfile: docker/php/Dockerfile
+        image: laravel-app
+        restart: unless-stopped
+        container_name: laravel_tdd
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - microservices
+
+    nginx:
+        image: nginx:alpine
+        restart: unless-stopped
+        container_name: nginx_laravel_tdd
+        ports:
+            -   8000:80
+            -   443:443
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - microservices
+
+    mysql:
+        image: mysql:5.7
+        restart: unless-stopped
+        container_name: mysql_laravel_phpunit_tdd
+        command: --max_allowed_packet=32505856
+        ports:
+            - 33061:3306
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+        volumes:
+            - mysql-data-phpunit-tdd:/var/lib/mysql:delegated
+        networks:
+            - microservices
