@@ -4,55 +4,40 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use PHPUnit\Framework\TestCase;
 
-class UserTest extends TestCase
+class UserTest extends ModelTestCase
 {
 
-    protected function model(): Model
+    protected function model(): User
     {
         return new User();
     }
 
-    public function testTraits(): void
+    protected function traitsExpected(): array
     {
-        $modelTraits = array_keys(class_uses($this->model()));
-        $expected = [
+        return [
             HasFactory::class,
             Notifiable::class,
         ];
-
-        $this->assertEquals($expected, $modelTraits);
     }
 
-    public function testFillable(): void
+
+    protected function fillableExpected(): array
     {
-        $fillable = $this->model()->getFillable();
-        $expectedFillable = [
+        return [
             'name',
             'email',
             'password',
         ];
-
-        $this->assertEquals($expectedFillable, $fillable);
     }
 
-    public function testIncrementingIsFalse(): void
+    protected function castsExpected(): array
     {
-        $this->assertFalse($this->model()->getIncrementing());
-    }
-
-    public function testHasCasts(): void
-    {
-        $expectedCasts = [
+        return [
             'id' => 'string',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-        $casts = $this->model()->getCasts();
-
-        $this->assertEquals($expectedCasts, $casts);
     }
 }
