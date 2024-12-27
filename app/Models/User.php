@@ -33,6 +33,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public $incrementing = false;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -41,6 +43,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'id' => 'string',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
