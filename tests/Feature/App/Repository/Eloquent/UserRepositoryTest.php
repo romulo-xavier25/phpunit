@@ -5,6 +5,7 @@ namespace Tests\Feature\App\Repository\Eloquent;
 use App\Models\User;
 use App\Repository\Eloquent\UserRepository;
 use App\Repository\Contracts\UserRepositoryInterface;
+use Illuminate\Database\QueryException;
 use Tests\TestCase;
 
 class UserRepositoryTest extends TestCase
@@ -58,4 +59,33 @@ class UserRepositoryTest extends TestCase
             'email' => 'john@doe.com',
         ]);
     }
+
+    public function testCreateException()
+    {
+        $this->expectException(QueryException::class);
+
+        $data = [
+            'name' => 'John Doe',
+            'password' => bcrypt('123456789'),
+        ];
+
+        $this->userRepository->create($data);
+    }
+
+    public function testUpdate()
+    {
+        $user = User::factory()->create();
+        $data = [
+            'name' => 'John Doe Update',
+        ];
+
+        $response = $this->userRepository->update($user->email, $data);
+
+        $this->assertNotNull($response);
+        $this->assertIsObject($response);
+        $this->assertDatabaseHas('users', [
+            'name' => 'John Doe Update',
+        ]);
+    }
+
 }
