@@ -42,4 +42,20 @@ class UserRepositoryTest extends TestCase
 
         $this->assertCount(10, $response);
     }
+
+    public function testCreate()
+    {
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john@doe.com',
+            'password' => bcrypt('123456789'),
+        ];
+        $response = $this->userRepository->create($data);
+
+        $this->assertNotNull($response);
+        $this->assertIsObject($response);
+        $this->assertDatabaseHas('users', [
+            'email' => 'john@doe.com',
+        ]);
+    }
 }
