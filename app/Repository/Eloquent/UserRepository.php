@@ -44,4 +44,9 @@ class UserRepository implements UserRepositoryInterface
 
         return $user->delete();
     }
+
+    public function findByEmail(string $email): ?object
+    {
+        return $this->model->where('email', $email)->first();
+    }
 }

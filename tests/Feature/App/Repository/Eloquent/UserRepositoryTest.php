@@ -111,4 +111,20 @@ class UserRepositoryTest extends TestCase
             $this->assertInstanceOf(NotFoundException::class, $exception);
         }
     }
+
+    public function testFindByEmail()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->userRepository->findByEmail($user->email);
+
+        $this->assertIsObject($response);
+    }
+
+    public function testFindByEmailNotFound()
+    {
+        $response = $this->userRepository->findByEmail("fake_email@gmail.com");
+
+        $this->assertNull($response);
+    }
 }
