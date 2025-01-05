@@ -49,4 +49,9 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->model->where('email', $email)->first();
     }
+
+    public function paginate()
+    {
+        return $this->model->paginate();
+    }
 }
