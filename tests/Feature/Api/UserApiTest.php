@@ -10,54 +10,45 @@ class UserApiTest extends TestCase
 {
     private string $endpoint = '/api/users';
 
-    public function testGetPaginateEmpty(): void
+    /**
+     * @dataProvider dataProviderPagination
+     */
+    public function testGetPaginate(
+        int $total, int $totalPage = 15, int $page = 1
+    ): void
     {
-        $response = $this->getJson($this->endpoint);
+        User::factory()->count($total)->create();
+        $response = $this->getJson($this->endpoint . '?page=' . $page);
 
         $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonCount($totalPage, 'data');
         $response->assertJsonStructure([
             'meta' => [
                 'total',
                 'per_page',
                 'current_page',
                 'last_page',
+            ],
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'email',
+                ]
             ]
         ]);
         $response->assertJsonFragment([
-            'total' => 0,
+            'total' => $total,
+            'current_page' => $page,
         ]);
     }
 
-    public function testGetPaginate(): void
+    public static function dataProviderPagination() : array
     {
-        User::factory()->count(40)->create();
-        $response = $this->getJson($this->endpoint);
-
-        $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonCount(15, 'data');
-        $response->assertJsonStructure([
-            'meta' => [
-                'total',
-                'per_page',
-                'current_page',
-                'last_page',
-            ]
-        ]);
-        $response->assertJsonFragment([
-            'total' => 40,
-        ]);
-    }
-
-    public function testPageTwo(): void
-    {
-        User::factory()->count(20)->create();
-        $response = $this->getJson($this->endpoint . '?page=2');
-
-        $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonCount(5, 'data');
-        $response->assertJsonFragment([
-            'total' => 20,
-            'per_page' => 15,
-        ]);
+        return [
+            'test total paginate empty' => ['total' => 0, 'totalPage' => 0, 'page' => 1],
+            'test total 40 users page 1' => ['total' => 40, 'totalPage' => 15, 'page' => 1],
+            'test total 20 users page 2' => ['total' => 20, 'totalPage' => 5, 'page' => 2],
+        ];
     }
 }
