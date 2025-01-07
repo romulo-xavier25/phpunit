@@ -70,4 +70,15 @@ class UserApiTest extends TestCase
             ]
         ]);
     }
+
+    public function testCreateValidations()
+    {
+        $payload = [
+            'email' => 'romulo@gmail.com',
+            'password' => '12345678',
+        ];
+        $response = $this->postJson($this->endpoint, $payload);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }
