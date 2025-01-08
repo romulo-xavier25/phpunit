@@ -52,7 +52,14 @@ class UserApiTest extends TestCase
         ];
     }
 
-    public function testCreate()
+    /**
+     * @dataProvider dataProviderCreateUser
+     */
+    public function testCreate(
+        array $payload,
+        int $statusCode,
+        array $structureResponse,
+    )
     {
         $payload = [
             'name' => 'Romulo',
@@ -61,24 +68,34 @@ class UserApiTest extends TestCase
         ];
         $response = $this->postJson($this->endpoint, $payload);
 
-        $response->assertStatus(Response::HTTP_CREATED);
-        $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'name',
-                'email',
-            ]
-        ]);
+        $response->assertStatus($statusCode);
+        $response->assertJsonStructure($structureResponse);
     }
 
-    public function testCreateValidations()
+    public static function dataProviderCreateUser(): array
     {
-        $payload = [
-            'email' => 'romulo@gmail.com',
-            'password' => '12345678',
-        ];
-        $response = $this->postJson($this->endpoint, $payload);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        return [
+            'test created' => [
+                'payload' => [
+                    'name' => 'Romulo',
+                    'email' => 'romulo@gmail.com',
+                    'password' => '12345678',
+                ],
+                'statusCode' => Response::HTTP_CREATED,
+                'structureResponse' => [
+                    'data' => [
+                        'id',
+                        'name',
+                        'email',
+                    ]
+                ]
+            ],
+            'test validation' => [
+                'payload' => [],
+                'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'structureResponse' => []
+            ],
+        ];
     }
 }
