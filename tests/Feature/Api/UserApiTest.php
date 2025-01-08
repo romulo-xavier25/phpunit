@@ -61,11 +61,6 @@ class UserApiTest extends TestCase
         array $structureResponse,
     )
     {
-        $payload = [
-            'name' => 'Romulo',
-            'email' => 'romulo@gmail.com',
-            'password' => '12345678',
-        ];
         $response = $this->postJson($this->endpoint, $payload);
 
         $response->assertStatus($statusCode);
