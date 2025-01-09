@@ -116,25 +116,32 @@ class UserApiTest extends TestCase
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
-    public function testUpdate()
+    /**
+     * @dataProvider dataProviderUpdateUser
+     */
+    public function testUpdate(array $payload, int $statusCode)
     {
         $user = User::factory()->create();
-        $payload = [
-            'name' => 'Romulo Updated',
-        ];
 
         $response = $this->putJson($this->endpoint . '/' . $user->email, $payload);
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertStatus($statusCode);
     }
 
-    public function testUpdateValidations()
+
+    public static function dataProviderUpdateUser(): array
     {
-        $user = User::factory()->create();
-        $payload = [];
-
-        $response = $this->putJson($this->endpoint . '/' . $user->email, $payload);
-
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        return [
+            'test update ok' => [
+                'payload' => [
+                    'name' => 'Romulo Updated',
+                ],
+                'statusCode' => Response::HTTP_OK,
+            ],
+            'test update name empty' => [
+                'payload' => [],
+                'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY,
+            ],
+        ];
     }
 }
