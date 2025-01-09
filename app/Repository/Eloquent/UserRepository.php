@@ -29,7 +29,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function update(string $email, array $data): object
     {
-        $user = $this->model->where('email', $email)->first();
+        $user = $this->findByEmail($email);
         $user->update($data);
         $user->refresh();
 

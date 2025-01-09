@@ -144,4 +144,16 @@ class UserApiTest extends TestCase
             ],
         ];
     }
+
+    public function testUpdateNotFound()
+    {
+        $payload = [
+            'name' => 'Romulo',
+        ];
+
+        $response = $this->putJson($this->endpoint . '/email_fake', $payload);
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+
+    }
 }
