@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use App\Repository\Exceptions\NotFoundException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -16,7 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        if ($exceptions instanceof NotFoundException) {
-            return response()->json(['error' => $exceptions->getMessage()], 404);
-        }
+        $exceptions->render(function (Throwable $exception, Request $request) {
+            if ($exception instanceof NotFoundException) {
+                return response()->json(['error' => $exception->getMessage()], 404);
+            }
+        });
     })->create();

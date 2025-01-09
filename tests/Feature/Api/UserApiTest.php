@@ -108,4 +108,11 @@ class UserApiTest extends TestCase
             ]
         ]);
     }
+
+    public function testFindNotFound()
+    {
+        $response = $this->getJson($this->endpoint . '/fake_email');
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
 }

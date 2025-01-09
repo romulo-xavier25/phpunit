@@ -38,18 +38,15 @@ class UserRepository implements UserRepositoryInterface
 
     public function delete(string $email): bool
     {
-        $user = $this->model->where('email', $email)->first();
-
-        if(!$user){
-            throw new NotFoundException("User not found");
-        }
-
-        return $user->delete();
+        return $this->findByEmail($email)->delete();
     }
 
-    public function findByEmail(string $email): ?object
+    public function findByEmail(string $email): object
     {
-        return $this->model->where('email', $email)->first();
+        if (!$user = $this->model->where('email', $email)->first()) {
+            throw new NotFoundException("User not found");
+        }
+        return $user;
     }
 
     public function paginate(int $page = 1) : PaginationInterface
