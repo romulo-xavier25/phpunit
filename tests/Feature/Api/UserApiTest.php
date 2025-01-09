@@ -114,5 +114,15 @@ class UserApiTest extends TestCase
         $response = $this->getJson($this->endpoint . '/fake_email');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-    }
+    }public function testUpdate()
+{
+    $user = User::factory()->create();
+    $payload = [
+        'name' => 'Romulo Updated',
+    ];
+
+    $response = $this->putJson($this->endpoint . '/' . $user->email, $payload);
+
+    $response->assertStatus(Response::HTTP_OK);
+}
 }

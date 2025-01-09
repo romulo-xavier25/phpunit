@@ -10,4 +10,5 @@ Route::get('/', function () {
 
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{email}', [UserController::class, 'show']);
+Route::put('/users/{email}', [UserController::class, 'update']);
 Route::post('/users', [UserController::class, 'store']);

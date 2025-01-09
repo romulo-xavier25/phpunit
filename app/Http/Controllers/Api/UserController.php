@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Resources\UserResource;
 use App\Repository\Contracts\UserRepositoryInterface;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -40,6 +41,13 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         $user = $this->repository->create($request->all());
+
+        return new UserResource($user);
+    }
+
+    public function update(Request $request, $email)
+    {
+        $user = $this->repository->update($email, $request->all());
 
         return new UserResource($user);
     }

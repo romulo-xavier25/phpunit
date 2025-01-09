@@ -124,6 +124,6 @@ class UserRepositoryTest extends TestCase
     public function testFindByEmailNotFound()
     {
         $this->expectException(NotFoundException::class);
-        $response = $this->userRepository->findByEmail("fake_email@gmail.com");
+        $this->userRepository->findByEmail("fake_email@gmail.com");
     }
 }
