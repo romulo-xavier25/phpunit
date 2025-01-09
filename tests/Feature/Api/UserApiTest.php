@@ -127,4 +127,14 @@ class UserApiTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
     }
+
+    public function testUpdateValidations()
+    {
+        $user = User::factory()->create();
+        $payload = [];
+
+        $response = $this->putJson($this->endpoint . '/' . $user->email, $payload);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }
