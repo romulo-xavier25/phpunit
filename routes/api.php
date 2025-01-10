@@ -8,8 +8,4 @@ Route::get('/', function () {
     return response()->json(['message' => 'Welcome to the API!']);
 });
 
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{email}', [UserController::class, 'show']);
-Route::put('/users/{email}', [UserController::class, 'update']);
-Route::delete('/users/{email}', [UserController::class, 'destroy']);
-Route::post('/users', [UserController::class, 'store']);
+Route::apiResource('users', UserController::class);
