@@ -7,7 +7,6 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Repository\Contracts\UserRepositoryInterface;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -51,5 +50,12 @@ class UserController extends Controller
         $user = $this->repository->update($email, $request->validated());
 
         return new UserResource($user);
+    }
+
+    public function destroy($email)
+    {
+        $this->repository->delete($email);
+
+        return response()->noContent();
     }
 }
