@@ -1,7 +1,9 @@
+## Projeto com Testes Unitários
+
 Projeto completo com testes unitários usando o PHPUnit.
 
-**Na branch Main**
-Nessa branch estou aplicando os tests usando uma estrutura básica.
+### Branch: Main
+Aplicando os testes usando uma estrutura básica.
 
-**Na branch laravel-tdd**
-Nessa branch estou usando os tests usando o framework Laravel.
+### Branch: laravel-tdd
+Aplicando os testes usando o framework Laravel.
